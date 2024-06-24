@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Server Minecraft TMGD</title>
+    <link rel="icon" href="c:\Users\Tommaso\Desktop\sito\img\.ico">
+    <style>
+        body {
+            background-color: lightskyblue;
+            font-family: "Arial Narrow";
+        }
+        h1 {
+            margin-bottom: 0;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        #timer {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        table {
+            background-color: gold;
+            border: 0;
+            bordercolor: black;
+            cellspacing: 0.5;
+            frame: below, rhs;
+            margin: 0 auto;
+        }
+        center h2 a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<body link="#0000EE">
+<body vlink="#0000EE">
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <iframe src="https://free.timeanddate.com/clock/i96md0kz/n5773/tlit6/fs24/tct/pct/tt0/tw0/td1/th1/tb1" frameborder="0" width="309" height="30" allowtransparency="true"></iframe>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <center>
+        <h2>
+            <i>
+                <a href="#" onclick="copyToClipboard('tmgd.aternos.me')">tmgd.aternos.me</a><br>...oppure...<br>
+                <a href="#" onclick="copyToClipboard('tmgd.aternos.me:21744')">tmgd.aternos.me:21744</a><br>Versione: 1.20.1
+            </i>
+        </h2>
+        <h1>Stato del Server TMGD:</h1>
+        <h2 id="status">Caricamento...</h2>
+        <form onsubmit="return inviaRichiesta()">
+            <div class="container">
+                <button type="submit" id="submitBtn">Invia Richiesta di Avvio</button>
+                <p id="timer">05:00</p>
+            </div>
+        </form>
+    </center>
+    <script>
+        async function fetchServerStatus() {
+            const serverAddress = 'tmgd.aternos.me';
+            const url = `https://mcapi.us/server/status?ip=${serverAddress}`;
+
+            try {
+                let response = await fetch(url);
+                let data = await response.json();
+
+                if (data.online && data.players.now > 0) {
+                    document.getElementById('status').textContent = `Il Server è Acceso! Giocatori Online: ${data.players.now}`;
+                } else {
+                    document.getElementById('status').textContent = 'Il Server è Spento!';
+                }
+            } catch (error) {
+                document.getElementById('status').textContent = 'Errore: impossibile recuperare lo stato del server';
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Indirizzo Server copiato negli appunti!');
+            }).catch(err => {
+                console.error('Errore durante la copia negli appunti: ', err);
+            });
+        }
+
+        fetchServerStatus();
+        setInterval(fetchServerStatus, 2000);
+
+        var timerInterval;
+
+        function inviaRichiesta() {
+            var chatId = "1163446705";
+            var token = "7229344554:AAEGnL17bTD1EFdmny8hS-cduCivGWsuBow";
+
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    var ipAddress = data.ip;
+                    var testoMessaggio = `Hai una richiesta di aprire il server TMGD da ${ipAddress}!`;
+
+                    var url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(testoMessaggio)}`;
+
+                    var options = {
+                        method: 'GET',
+                    };
+
+                    fetch(url, options)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Messaggio inviato:", data);
+                            alert("Messaggio inviato con successo!");
+                            startTimer(300);
+                            document.getElementById('submitBtn').disabled = true;
+                        })
+                        .catch(error => {
+                            console.error('Errore durante l\'invio del messaggio a Telegram:', error);
+                            alert("Si è verificato un errore durante l'invio del messaggio a Telegram.");
+                        });
+                })
+                .catch(error => {
+                    console.error('Errore durante il recupero dell\'indirizzo IP:', error);
+                    alert("Impossibile recuperare l'indirizzo IP in questo momento.");
+                });
+
+            return false;
+        }
+
+        function startTimer(duration) {
+            var timerDisplay = document.getElementById('timer');
+
+            var timer = duration, minutes, seconds;
+            clearInterval(timerInterval);
+
+            timerInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                timerDisplay.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timerDisplay.textContent = "05:00";
+                    clearInterval(timerInterval);
+                    document.getElementById('submitBtn').disabled = false;
+                }
+            }, 1000);
+        }
+    </script>
+	
+	  <script>   <!-- blocco tasto destro del mouse -->
+  function blocco_mousedx()
+   { return(false); }
+  document.oncontextmenu = blocco_mousedx;
+</script>
+
+<script> <!-- blocco scorciatoie da tastiera -->
+ document.onkeydown = function(blocco_tasti) {
+  if(event.keyCode == 123) 
+{ return false; }
+  if(blocco_tasti.ctrlKey && blocco_tasti.shiftKey && blocco_tasti.keyCode == 'I'.charCodeAt(0)) { return false; }
+  if(blocco_tasti.ctrlKey && blocco_tasti.shiftKey && blocco_tasti.keyCode == 'C'.charCodeAt(0)) { return false; }
+  if(blocco_tasti.ctrlKey && blocco_tasti.shiftKey && blocco_tasti.keyCode == 'J'.charCodeAt(0)) { return false; }
+  if(blocco_tasti.ctrlKey && blocco_tasti.keyCode == 'U'.charCodeAt(0)) { return false; } 
+  if(blocco_tasti.ctrlKey && blocco_tasti.keyCode == 'S'.charCodeAt(0)) 
+{ return false; } 
+}
+</script>
+
+    <center>
+        <img src="C:\Users\Tommaso\Downloads\mc.jpeg" width="150" height="">
+        <h3><i>Per qualsiasi problema riguardo al server e/o al sito,<br>contattate il proprietario, grazie!</i></h3>
+    </center>
+    <b><i><p align="center">Copyright © TMGD 2024<br>Tutti i diritti sono riservati.<br>Ultimo aggiornamento: 24 GIU 2024
+    <br>
+    <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" 
+    style="display:inline-block;">CC BY-NC-ND 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" 
+    src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1">
+    <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" 
+    src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1">
+    <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" 
+    src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1">
+    <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+    src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1">
+    </a></p></i></b>
+</body>
+</html>
